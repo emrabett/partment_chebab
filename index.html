@@ -235,21 +235,6 @@
             color: #5a6c7d;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .month-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .payments-table {
-                font-size: 0.9em;
-            }
-        }
-
         .note {
             background: #fff3cd;
             border-right: 4px solid #ffc107;
@@ -258,6 +243,169 @@
             margin-top: 10px;
             color: #856404;
             font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .bank-number {
+                font-size: 1.1em;
+                padding: 12px 20px;
+            }
+
+            .summary-section {
+                padding: 20px 15px;
+            }
+
+            .summary-section h2 {
+                font-size: 1.6em;
+            }
+
+            .expenses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-card {
+                padding: 15px;
+            }
+
+            .expense-label {
+                font-size: 1em;
+            }
+
+            .expense-amount {
+                font-size: 1.5em;
+            }
+
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-value {
+                font-size: 2em;
+            }
+
+            .month-section {
+                padding: 20px 10px;
+            }
+
+            .month-header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px 20px;
+            }
+
+            .month-title {
+                font-size: 1.4em;
+            }
+
+            .month-total {
+                font-size: 1.6em;
+            }
+
+            .payments-table {
+                font-size: 0.85em;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .payments-table thead th {
+                font-size: 1em;
+                padding: 10px 8px;
+            }
+
+            .payments-table tbody td {
+                padding: 12px 8px;
+            }
+
+            .name-cell {
+                font-size: 1em;
+            }
+
+            .amount-cell {
+                font-size: 1.2em;
+            }
+
+            .paid-badge, .unpaid-badge, .partial-badge {
+                font-size: 0.8em;
+                padding: 4px 10px;
+            }
+
+            .note {
+                font-size: 0.9em;
+                padding: 12px;
+            }
+
+            .footer {
+                padding: 20px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .bank-number {
+                font-size: 1em;
+                padding: 10px 18px;
+            }
+
+            .summary-section h2 {
+                font-size: 1.4em;
+            }
+
+            .expense-label {
+                font-size: 0.95em;
+            }
+
+            .expense-amount {
+                font-size: 1.3em;
+            }
+
+            .stat-value {
+                font-size: 1.8em;
+            }
+
+            .stat-label {
+                font-size: 1em;
+            }
+
+            .month-title {
+                font-size: 1.2em;
+            }
+
+            .month-total {
+                font-size: 1.4em;
+            }
+
+            .payments-table {
+                font-size: 0.8em;
+            }
+
+            .name-cell {
+                font-size: 0.95em;
+            }
+
+            .amount-cell {
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
