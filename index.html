@@ -1,1 +1,870 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de la Qualité - Module Odoo 18</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .version {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .header .tagline {
+            font-size: 1.1em;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            background: white;
+            margin: 30px 0;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .highlight-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .highlight-card p {
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .screenshot {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .screenshot img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .screenshot-caption {
+            margin-top: 10px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .installation-steps {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .installation-steps ol {
+            padding-left: 20px;
+        }
+
+        .installation-steps li {
+            margin: 10px 0;
+            font-size: 1.05em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .faq-item {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .faq-answer {
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-spec {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .tech-spec-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .tech-spec-value {
+            color: #5a6c7d;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .cta-section h2 {
+            color: white;
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .workflow-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .workflow-step {
+            display: inline-block;
+            background: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            min-width: 150px;
+        }
+
+        .workflow-arrow {
+            display: inline-block;
+            color: #667eea;
+            font-size: 2em;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .highlights {
+                grid-template-columns: 1fr;
+            }
+            
+            .workflow-step {
+                display: block;
+                margin: 20px auto;
+            }
+            
+            .workflow-arrow {
+                display: block;
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🔍 Gestion de la Qualité</h1>
+        <div class="version">Module Odoo 18.0 | Version 18.0.1.0.0</div>
+        <p class="tagline">Solution complète et indépendante pour la gestion de la qualité dans Odoo Community - Contrôlez, améliorez et assurez la qualité de vos processus de production</p>
+    </div>
+
+    <div class="container">
+
+        <!-- INTRODUCTION -->
+        <div class="section">
+            <h2>📋 Description</h2>
+            <p style="font-size: 1.1em; line-height: 1.8; color: #5a6c7d;">
+                Le module <strong>Gestion de la Qualité</strong> offre une solution complète pour gérer la qualité dans vos opérations de fabrication, 
+                d'approvisionnement et de logistique. Entièrement indépendant des modules Enterprise, ce module vous permet de mettre en place 
+                un système de contrôle qualité robuste et flexible.
+            </p>
+            
+            <div class="success-box">
+                <strong>✨ Points forts :</strong> Architecture indépendante d'Enterprise • Interface intuitive • Workflow complet • 
+                Intégration native avec Stock, MRP et Purchase • Alertes et notifications automatiques
+            </div>
+        </div>
+
+        <!-- KEY HIGHLIGHTS -->
+        <div class="section">
+            <h2>🎯 Fonctionnalités Clés</h2>
+            
+            <div class="highlights">
+                <div class="highlight-card">
+                    <h4>📊 Plans de Contrôle Qualité</h4>
+                    <p>Créez des plans de contrôle personnalisés pour vos différents processus de production et d'approvisionnement.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>🎯 Points de Contrôle Flexibles</h4>
+                    <p>Définissez des points de contrôle avec différents types de tests : mesure, visuel, photo, texte, et plus encore.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>✅ Contrôles Qualité Complets</h4>
+                    <p>Exécutez des contrôles qualité avec un workflow complet : brouillon, en cours, réussi, échoué.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>🚨 Alertes Qualité</h4>
+                    <p>Générez automatiquement des alertes en cas de non-conformité et suivez leur résolution.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>👥 Équipes Qualité</h4>
+                    <p>Organisez vos équipes qualité avec des responsables et des compétences assignées.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>📈 Tableaux de Bord Interactifs</h4>
+                    <p>Visualisez vos statistiques de qualité en temps réel avec des graphiques et indicateurs de performance.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>🔗 Intégration MRP & Stock</h4>
+                    <p>Intégration native avec les ordres de fabrication, transferts de stock et commandes d'achat.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>📸 Contrôles Visuels</h4>
+                    <p>Capturez et stockez des photos lors des contrôles qualité pour une traçabilité complète.</p>
+                </div>
+
+                <div class="highlight-card">
+                    <h4>📏 Tests de Mesure</h4>
+                    <p>Effectuez des mesures avec tolérances min/max et normes de référence.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TYPES DE TESTS -->
+        <div class="section">
+            <h2>🧪 Types de Tests Supportés</h2>
+            
+            <ul class="features-list">
+                <li><strong>Mesure (Measure)</strong> - Tests avec tolérances minimales et maximales, unités de mesure et normes de référence</li>
+                <li><strong>Contrôle Visuel (Visual Check)</strong> - Évaluation visuelle qualitative des produits ou composants</li>
+                <li><strong>Oui/Non (Yes/No)</strong> - Tests binaires pour validation rapide de critères simples</li>
+                <li><strong>Réussi/Échoué (Pass/Fail)</strong> - Tests de conformité avec résultat binaire</li>
+                <li><strong>Photo (Picture)</strong> - Contrôles nécessitant la capture d'images pour documentation</li>
+                <li><strong>Texte (Text)</strong> - Observations textuelles détaillées et commentaires libres</li>
+                <li><strong>Feuille de Calcul (Spreadsheet)</strong> - Contrôles avancés avec données structurées et calculs</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>💡 Astuce :</strong> Vous pouvez combiner plusieurs types de tests dans un même plan de contrôle pour une évaluation complète de la qualité.
+            </div>
+        </div>
+
+        <!-- WORKFLOW -->
+        <div class="section">
+            <h2>🔄 Workflow de Contrôle Qualité</h2>
+            
+            <div class="workflow-diagram">
+                <div class="workflow-step">
+                    <strong>1. Création</strong><br>
+                    Point de contrôle défini
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <strong>2. Déclenchement</strong><br>
+                    Contrôle généré automatiquement
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <strong>3. Exécution</strong><br>
+                    Test effectué par l'équipe
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <strong>4. Validation</strong><br>
+                    Résultat enregistré
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <strong>5. Action</strong><br>
+                    Alerte si échec
+                </div>
+            </div>
+
+            <h3>États des Contrôles</h3>
+            <div class="tech-specs">
+                <div class="tech-spec">
+                    <div class="tech-spec-label">À faire (To Do)</div>
+                    <div class="tech-spec-value">Contrôle créé, en attente d'exécution</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Réussi (Passed)</div>
+                    <div class="tech-spec-value">Contrôle effectué avec succès, conforme</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Échoué (Failed)</div>
+                    <div class="tech-spec-value">Non-conformité détectée, alerte créée</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTÉGRATIONS -->
+        <div class="section">
+            <h2>🔌 Intégrations</h2>
+            
+            <h3>📦 Module Stock (Inventaire)</h3>
+            <ul class="features-list">
+                <li>Contrôles qualité sur les opérations de réception</li>
+                <li>Contrôles sur les opérations de livraison</li>
+                <li>Gestion par lot et numéro de série</li>
+                <li>Contrôles par quantité sur les lignes de mouvement</li>
+                <li>Emplacements de rebut pour produits non-conformes</li>
+            </ul>
+
+            <h3>🏭 Module MRP (Manufacturing)</h3>
+            <ul class="features-list">
+                <li>Contrôles qualité sur les ordres de fabrication</li>
+                <li>Points de contrôle par opération de fabrication</li>
+                <li>Contrôles sur les centres de travail</li>
+                <li>Intégration avec les ordres de travail (Workorders)</li>
+                <li>Validation qualité avant clôture de production</li>
+            </ul>
+
+            <h3>🛒 Module Purchase (Achats)</h3>
+            <ul class="features-list">
+                <li>Contrôles qualité sur les commandes d'achat</li>
+                <li>Validation qualité à la réception fournisseur</li>
+                <li>Suivi des non-conformités fournisseurs</li>
+                <li>Statistiques qualité par fournisseur</li>
+            </ul>
+
+            <h3>🔧 Module Maintenance</h3>
+            <ul class="features-list">
+                <li>Création d'alertes qualité liées à la maintenance</li>
+                <li>Suivi des équipements défectueux</li>
+                <li>Demandes de maintenance suite à problèmes qualité</li>
+            </ul>
+        </div>
+
+        <!-- INSTALLATION -->
+        <div class="section">
+            <h2>⚙️ Installation</h2>
+            
+            <div class="installation-steps">
+                <h3>Étapes d'installation :</h3>
+                <ol>
+                    <li>Copiez le module <code>quality_management</code> dans votre dossier addons Odoo</li>
+                    <li>Redémarrez le serveur Odoo</li>
+                    <li>Activez le mode développeur dans Odoo</li>
+                    <li>Allez dans Applications et cliquez sur "Mettre à jour la liste des Apps"</li>
+                    <li>Recherchez "Gestion de la Qualité"</li>
+                    <li>Cliquez sur "Installer"</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Prérequis :</strong> Ce module nécessite les modules <code>base</code>, <code>mail</code>, 
+                <code>stock</code>, <code>mrp</code> et <code>maintenance</code>. Assurez-vous qu'ils sont installés.
+            </div>
+        </div>
+
+        <!-- CONFIGURATION -->
+        <div class="section">
+            <h2>🛠️ Configuration</h2>
+            
+            <h3>1. Créer une Équipe Qualité</h3>
+            <img src="G:\odoo-18.01\odoo-18.0\odoo-18.0\customer\quality_management\static\description\equipe_controller.png" alt="Équipes Qualité" style="width: 100%; height: auto;">
+            <p>Allez dans <strong>Qualité > Configuration > Équipes Qualité</strong> et créez votre première équipe :</p>
+            <ul class="features-list">
+                <li>Nom de l'équipe</li>
+                <li>Responsable</li>
+                <li>Membres de l'équipe</li>
+                <li>Compétences et certifications</li>
+            </ul>
+
+            <h3>2. Définir des Points de Contrôle</h3>
+            <img src="G:\odoo-18.01\odoo-18.0\odoo-18.0\customer\quality_management\static\description\point_controller.png" alt="Points de Contrôle" style="width: 100%; height: auto;">
+            <p>Configurez vos points de contrôle dans <strong>Qualité > Configuration > Points de Contrôle</strong> :</p>
+            <ul class="features-list">
+                <li>Sélectionnez le type de test (mesure, visuel, photo...)</li>
+                <li>Définissez les produits ou catégories concernés</li>
+                <li>Choisissez les opérations (réception, livraison, fabrication...)</li>
+                <li>Configurez les tolérances pour les tests de mesure</li>
+                <li>Ajoutez des instructions et notes</li>
+            </ul>
+
+            <h3>3. Créer des Plans de Contrôle</h3>
+            <img src="G:\odoo-18.01\odoo-18.0\odoo-18.0\customer\quality_management\static\description\point_controller.png" alt="Plans de Contrôle">
+            <p>Organisez vos points de contrôle en plans dans <strong>Qualité > Configuration > Plans de Contrôle</strong></p>
+    
+            <h3>4. Configurer les Alertes</h3>
+            <img src="G:\odoo-18.01\odoo-18.0\odoo-18.0\customer\quality_management\static\description\alert_controller.png" alt="Plans de Contrôle">
+            <p>Personnalisez les étapes d'alerte dans <strong>Qualité > Configuration > Étapes d'Alerte</strong> :</p>
+            <ul class="features-list">
+                <li>Nouveau</li>
+                <li>En cours d'investigation</li>
+                <li>Action corrective en cours</li>
+                <li>Résolu</li>
+                <li>Clôturé</li>
+            </ul>
+        </div>
+
+        <!-- UTILISATION -->
+        <div class="section">
+            <h2>📱 Utilisation</h2>
+            
+            <h3>Exécuter un Contrôle Qualité Manuel</h3>
+            <img src="G:\odoo-18.01\odoo-18.0\odoo-18.0\customer\quality_management\static\description\controll_qualite.png" alt="Plans de Contrôle">
+            <div class="installation-steps">
+                <ol>
+                    <li>Allez dans <strong>Qualité > Contrôles Qualité</strong></li>
+                    <li>Cliquez sur "Créer" ou utilisez le wizard de contrôle</li>
+                    <li>Sélectionnez le point de contrôle</li>
+                    <li>Renseignez le produit, lot/série si applicable</li>
+                    <li>Effectuez le test selon le type défini</li>
+                    <li>Validez comme "Réussi" ou "Échoué"</li>
+                    <li>Si échec : une alerte est automatiquement créée</li>
+                </ol>
+            </div>
+
+            <h3>Contrôles Automatiques</h3>
+            <p>Les contrôles sont automatiquement générés sur :</p>
+            <ul class="features-list">
+                <li>Réception de commandes d'achat (si point de contrôle configuré)</li>
+                <li>Opérations de stock (réceptions, livraisons, transferts)</li>
+                <li>Ordres de fabrication (par opération ou au niveau global)</li>
+                <li>Enregistrement de quantités sur lignes de mouvement</li>
+            </ul>
+
+            <h3>Gérer les Alertes Qualité</h3>
+            <div class="installation-steps">
+                <ol>
+                    <li>Accédez à <strong>Qualité > Alertes Qualité</strong></li>
+                    <li>Consultez les alertes par étape</li>
+                    <li>Assignez les alertes aux responsables</li>
+                    <li>Documentez les actions correctives</li>
+                    <li>Suivez la résolution dans le pipeline Kanban</li>
+                    <li>Clôturez les alertes une fois résolues</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- FONCTIONNALITÉS AVANCÉES -->
+        <div class="section">
+            <h2>🚀 Fonctionnalités Avancées</h2>
+            
+            <h3>📊 Contrôles par Quantité (Measure on Move Line)</h3>
+            <p>Permet de contrôler la qualité par quantité enregistrée :</p>
+            <ul class="features-list">
+                <li>Un contrôle est créé pour chaque nouvelle quantité enregistrée</li>
+                <li>Possibilité de contrôles partiels sur les quantités</li>
+                <li>Suivi détaillé par ligne de mouvement</li>
+                <li>Traçabilité complète lot par lot</li>
+            </ul>
+
+            <h3>🎯 Tests de Mesure avec Tolérances</h3>
+            <ul class="features-list">
+                <li>Définissez des valeurs min/max acceptables</li>
+                <li>Messages d'avertissement configurables</li>
+                <li>Messages d'échec personnalisés</li>
+                <li>Unités de mesure flexibles</li>
+                <li>Historique des mesures pour analyse statistique</li>
+            </ul>
+
+            <h3>📍 Emplacements de Rebut</h3>
+            <ul class="features-list">
+                <li>Configurez des emplacements pour produits non-conformes</li>
+                <li>Déplacement automatique en cas d'échec</li>
+                <li>Gestion des quantités échouées</li>
+                <li>Traçabilité des produits mis au rebut</li>
+            </ul>
+
+            <h3>🔔 Notifications et Rappels</h3>
+            <ul class="features-list">
+                <li>Notifications par email sur création d'alerte</li>
+                <li>Rappels pour contrôles en attente</li>
+                <li>Suivi d'activité intégré</li>
+                <li>Chatter pour collaboration d'équipe</li>
+            </ul>
+        </div>
+
+        <!-- SPÉCIFICATIONS TECHNIQUES -->
+        <div class="section">
+            <h2>💻 Spécifications Techniques</h2>
+            
+            <div class="tech-specs">
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Nom Technique</div>
+                    <div class="tech-spec-value">quality_management</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Version</div>
+                    <div class="tech-spec-value">18.0.1.0.0</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Catégorie</div>
+                    <div class="tech-spec-value">Quality</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Licence</div>
+                    <div class="tech-spec-value">LGPL-3</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Architecture</div>
+                    <div class="tech-spec-value">Indépendante d'Enterprise</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">Compatibilité</div>
+                    <div class="tech-spec-value">Odoo 18.0 Community & Enterprise</div>
+                </div>
+            </div>
+
+            <h3>Modèles Principaux</h3>
+            <div class="code-block">
+quality.team1          # Équipes qualité
+quality.plan1          # Plans de contrôle
+quality.point1         # Points de contrôle
+quality.check1         # Contrôles qualité
+quality.alert1         # Alertes qualité
+quality.alert.stage1   # Étapes d'alerte
+quality.tag1           # Tags/Étiquettes
+quality.point.test_type1  # Types de test
+            </div>
+
+            <h3>Dépendances</h3>
+            <ul class="features-list">
+                <li><code>base</code> - Module de base Odoo</li>
+                <li><code>mail</code> - Messagerie et chatter</li>
+                <li><code>stock</code> - Gestion des stocks</li>
+                <li><code>mrp</code> - Manufacturing (Fabrication)</li>
+                <li><code>maintenance</code> - Maintenance</li>
+            </ul>
+        </div>
+
+        <!-- FAQ -->
+        <div class="section">
+            <h2>❓ Questions Fréquentes (FAQ)</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Q: Ce module est-il compatible avec Odoo Community ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Oui, absolument ! Ce module a été spécialement conçu pour être totalement indépendant 
+                    des modules Enterprise. Il fonctionne parfaitement sur Odoo Community Edition 18.0.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Puis-je utiliser ce module avec les modules Quality Enterprise ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Oui, ce module utilise des noms de modèles avec suffixes (quality.check1, quality.point1, etc.) 
+                    pour éviter tout conflit avec les modules Enterprise. Vous pouvez les utiliser en parallèle.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Comment créer des contrôles qualité automatiques ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Configurez des points de contrôle avec les opérations souhaitées (réception, livraison, fabrication). 
+                    Les contrôles seront automatiquement générés lorsque ces opérations sont effectuées.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Peut-on effectuer des contrôles par lot ou numéro de série ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Oui, le module supporte pleinement la gestion par lot et numéro de série. Vous pouvez 
+                    effectuer des contrôles sur des lots spécifiques et maintenir une traçabilité complète.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Comment gérer les produits non-conformes ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Configurez des emplacements de rebut dans vos points de contrôle. En cas d'échec d'un contrôle, 
+                    le système peut automatiquement déplacer les quantités non-conformes vers ces emplacements.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Puis-je personnaliser les types de tests ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Oui, vous pouvez créer de nouveaux types de tests dans Configuration > Types de Test. 
+                    Le module supporte déjà 7 types de tests différents que vous pouvez étendre.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Comment suivre les performances qualité ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Le module inclut des vues d'analyse avec graphiques et statistiques. Vous pouvez analyser 
+                    les taux de réussite/échec par produit, équipe, période, etc.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Q: Les alertes qualité sont-elles liées aux demandes de maintenance ?</div>
+                <div class="faq-answer">
+                    <strong>R:</strong> Oui, vous pouvez créer des demandes de maintenance directement depuis une alerte qualité 
+                    si le problème est lié à un équipement défectueux.
+                </div>
+            </div>
+        </div>
+
+        <!-- PERMISSIONS ET SÉCURITÉ -->
+        <div class="section">
+            <h2>🔒 Permissions et Sécurité</h2>
+            
+            <h3>Groupes d'Utilisateurs</h3>
+            <div class="tech-specs">
+                <div class="tech-spec">
+                    <div class="tech-spec-label">👤 Utilisateur Qualité</div>
+                    <div class="tech-spec-value">Peut créer et exécuter des contrôles qualité, voir les alertes</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">👨‍💼 Responsable Qualité</div>
+                    <div class="tech-spec-value">Tous les droits utilisateur + création de points de contrôle et plans</div>
+                </div>
+                <div class="tech-spec">
+                    <div class="tech-spec-label">👨‍💻 Administrateur Qualité</div>
+                    <div class="tech-spec-value">Accès complet incluant configuration et paramètres système</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Astuce :</strong> Assignez les utilisateurs aux bons groupes dans Paramètres > Utilisateurs et Droits d'Accès 
+                pour contrôler finement les permissions.
+            </div>
+        </div>
+
+        <!-- SUPPORT -->
+        <div class="section">
+            <h2>🆘 Support et Documentation</h2>
+            
+            <h3>📚 Ressources Disponibles</h3>
+            <ul class="features-list">
+                <li>Documentation technique dans le dossier du module</li>
+                <li>Fichiers README détaillés</li>
+                <li>Exemples de configuration en démo data</li>
+                <li>Code source commenté et documenté</li>
+            </ul>
+
+            <h3>📧 Obtenir de l'Aide</h3>
+            <p>Pour toute question, assistance technique ou demande de personnalisation :</p>
+            <ul class="features-list">
+                <li>Consultez la documentation intégrée au module</li>
+                <li>Vérifiez les fichiers de correction dans le dossier du module</li>
+                <li>Contactez votre équipe de développement Odoo</li>
+                <li>Créez un ticket sur votre plateforme de support</li>
+            </ul>
+        </div>
+
+        <!-- ROADMAP -->
+        <div class="section">
+            <h2>🗺️ Roadmap et Évolutions Futures</h2>
+            
+            <h3>Fonctionnalités Prévues</h3>
+            <ul class="features-list">
+                <li>🔄 Intégration avec les rapports de qualité avancés</li>
+                <li>📊 Tableaux de bord interactifs améliorés</li>
+                <li>🤖 Automatisation avancée des alertes</li>
+                <li>📱 Application mobile pour contrôles terrain</li>
+                <li>🔗 API REST pour intégrations tierces</li>
+                <li>📈 Analyse statistique avancée (SPC - Statistical Process Control)</li>
+                <li>🎨 Templates de rapports personnalisables</li>
+                <li>🌐 Support multilingue étendu</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>💬 Vos Retours Comptent !</strong> N'hésitez pas à partager vos suggestions d'amélioration 
+                et vos besoins spécifiques pour les prochaines versions.
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>🚀 Prêt à Améliorer Votre Qualité ?</h2>
+            <p style="font-size: 1.2em; margin: 20px 0;">
+                Installez le module Gestion de la Qualité dès maintenant et commencez à maîtriser vos processus de contrôle qualité
+            </p>
+            <a href="#" class="cta-button">📥 Télécharger le Module</a>
+            <a href="#" class="cta-button">📖 Documentation Complète</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="section" style="background: #2c3e50; color: white;">
+            <h2 style="color: white; border-color: white;">📝 Informations Légales</h2>
+            <p style="color: #ecf0f1;">
+                <strong>Module :</strong> Gestion de la Qualité - Module Personnel<br>
+                <strong>Version :</strong> 18.0.1.0.0<br>
+                <strong>Licence :</strong> LGPL-3<br>
+                <strong>Compatibilité :</strong> Odoo 18.0 Community & Enterprise<br>
+                <strong>Dernière mise à jour :</strong> 2025
+            </p>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #34495e;">
+                <p style="color: #bdc3c7; font-size: 0.9em;">
+                    © 2025 - Tous droits réservés. Ce module est distribué sous licence LGPL-3. 
+                    Vous êtes libre de l'utiliser, le modifier et le distribuer selon les termes de cette licence.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
