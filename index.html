@@ -423,18 +423,7 @@
         <div class="summary-section">
             <h2>💰 ملخص المصروفات</h2>
             <div class="expenses-grid">
-                <div class="expense-card">
-                    <div class="expense-label">رسوم شهر 8 </div>
-                    <div class="expense-amount">10,000</div>
-                </div>
-                <div class="expense-card">
-                    <div class="expense-label">رسوم شهر 9</div>
-                    <div class="expense-amount">5,000</div>
-                </div>
-                <div class="expense-card">
-                    <div class="expense-label">رسوم شهر 10</div>
-                    <div class="expense-amount">9,000</div>
-                </div>
+                
                 <div class="expense-card">
                     <div class="expense-label">آلاة تنظيف سكن  </div>
                     <div class="expense-amount">1,000</div>
@@ -455,10 +444,7 @@
                     <div class="expense-label">فاتورة كهرباء ( تم دفعها يوم 5 اكتوب)</div>
                     <div class="expense-amount">7,000</div>
                 </div>
-                <div class="expense-card">
-                    <div class="expense-label">رسوم شهر 11</div>
-                    <div class="expense-amount">8,000</div>
-                </div>
+                
             </div>
 
             <div class="stats-cards">
@@ -838,22 +824,35 @@
                 }
             });
 
-            // Calculer les charges fixes
-            const expenses = [
-                { id: 'expense-month-8', amount: 10000 },
-                { id: 'expense-month-9', amount: 5000 },
-                { id: 'expense-month-10', amount: 9000 },
-                { id: 'expense-cleaning-tool', amount: 1000 },
-                { id: 'expense-trash-transport', amount: 1000 },
-                { id: 'expense-curtains', amount: 12000 },
-                { id: 'expense-cleaning-initial', amount: 2500 },
-                { id: 'expense-electricity', amount: 7000 },
-                { id: 'expense-month-11', amount: 8000 }
-            ];
-
+            // Calculer automatiquement les dépenses à partir des cartes affichées
             let totalExpenses = 0;
-            expenses.forEach(expense => {
-                totalExpenses += expense.amount;
+            const expenseCards = document.querySelectorAll('.expense-card');
+            
+            expenseCards.forEach(card => {
+                const amountElement = card.querySelector('.expense-amount');
+                if (amountElement) {
+                    // Extraire le nombre du texte (enlever les virgules et les mots comme "شهريا")
+                    const amountText = amountElement.textContent.trim();
+                    const amount = parseFloat(amountText.replace(/[^\d]/g, ''));
+                    
+                    if (!isNaN(amount) && amount > 0) {
+                        totalExpenses += amount;
+                    }
+                }
+            });
+
+            // Ajouter les totaux des mois (les loyers mensuels)
+            monthsData.forEach(month => {
+                const section = document.querySelector(`[data-month="${month.monthId}"]`);
+                if (section) {
+                    const monthTotalElement = section.querySelector('.month-total');
+                    if (monthTotalElement) {
+                        const monthAmount = parseFloat(monthTotalElement.textContent.replace(/,/g, ''));
+                        if (!isNaN(monthAmount)) {
+                            totalExpenses += monthAmount;
+                        }
+                    }
+                }
             });
 
             // Mettre à jour le total des dépenses
