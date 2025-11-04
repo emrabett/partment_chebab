@@ -440,8 +440,12 @@
                     <div class="expense-amount">1,000</div>
                 </div>
                 <div class="expense-card">
-                    <div class="expense-label"> نقل سلة النظافة</div>
+                    <div class="expense-label">  تكلفةنقل سلة النظافة </div>
                     <div class="expense-amount"> شهريا 1,000</div>
+                </div>
+                <div class="expense-card">
+                    <div class="expense-label">تكلفة شراء ريدوهات</div>
+                    <div class="expense-amount">12,000</div>
                 </div>
                 <div class="expense-card">
                     <div class="expense-label">تكاليف تنظيف السكن (مرة واحدة عند دخول )</div>
@@ -460,7 +464,7 @@
             <div class="stats-cards">
                 <div class="stat-card">
                     <div class="stat-label">إجمالي المصروفات</div>
-                    <div class="stat-value">330,500</div>
+                    <div class="stat-value" data-stat="total-expenses">330,500</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">عدد الأشهر</div>
@@ -474,7 +478,7 @@
         </div>
 
         <!-- Month 8 (August) -->
-        <div class="month-section">
+        <div class="month-section" data-month="month-8">
             <div class="month-header">
                 <div class="month-title">📅 شهر أغسطس (8)</div>
                 <div class="month-total">10,000</div>
@@ -549,7 +553,7 @@
         </div>
 
         <!-- Month 9 (September) -->
-        <div class="month-section">
+        <div class="month-section" data-month="month-9">
             <div class="month-header">
                 <div class="month-title">📅 شهر سبتمبر (9)</div>
                 <div class="month-total">5,000</div>
@@ -624,7 +628,7 @@
         </div>
 
         <!-- Month 10 (October) -->
-        <div class="month-section">
+        <div class="month-section" data-month="month-10">
             <div class="month-header">
                 <div class="month-title">📅 شهر أكتوبر (10)</div>
                 <div class="month-total">9,000</div>
@@ -699,7 +703,7 @@
         </div>
 
         <!-- Month 11 (November) -->
-        <div class="month-section">
+        <div class="month-section" data-month="month-11">
             <div class="month-header">
                 <div class="month-title">📅 شهر نوفمبر (11)</div>
                 <div class="month-total">8,000</div>
@@ -784,6 +788,94 @@
         </div>
 
     </div>
+
+    <script>
+        // Fonction pour calculer les totaux automatiquement
+        function calculateTotals() {
+            // Données des paiements par mois
+            const monthsData = [
+                { monthId: 'month-8', amount: 10000 },
+                { monthId: 'month-9', amount: 5000 },
+                { monthId: 'month-10', amount: 9000 },
+                { monthId: 'month-11', amount: 8000 }
+            ];
+
+            let totalPayments = 0;
+            let totalPaid = 0;
+            let totalUnpaid = 0;
+
+            // Calculer pour chaque mois
+            monthsData.forEach(month => {
+                const section = document.querySelector(`[data-month="${month.monthId}"]`);
+                if (!section) return;
+
+                const rows = section.querySelectorAll('tbody tr');
+                let monthTotal = 0;
+                let paidCount = 0;
+                let unpaidCount = 0;
+
+                rows.forEach(row => {
+                    const statusCell = row.querySelector('.paid-badge, .unpaid-badge, .partial-badge');
+                    const amountCell = row.querySelector('.amount-cell');
+                    
+                    if (statusCell && statusCell.classList.contains('paid-badge')) {
+                        const amount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+                        if (!isNaN(amount)) {
+                            monthTotal += amount;
+                            totalPaid += amount;
+                            paidCount++;
+                        }
+                    } else if (statusCell && statusCell.classList.contains('unpaid-badge')) {
+                        totalUnpaid += month.amount;
+                        unpaidCount++;
+                    }
+                });
+
+                // Mettre à jour le total du mois
+                const monthTotalElement = section.querySelector('.month-total');
+                if (monthTotalElement) {
+                    monthTotalElement.textContent = monthTotal.toLocaleString();
+                }
+            });
+
+            // Calculer les charges fixes
+            const expenses = [
+                { id: 'expense-month-8', amount: 10000 },
+                { id: 'expense-month-9', amount: 5000 },
+                { id: 'expense-month-10', amount: 9000 },
+                { id: 'expense-cleaning-tool', amount: 1000 },
+                { id: 'expense-trash-transport', amount: 1000 },
+                { id: 'expense-curtains', amount: 12000 },
+                { id: 'expense-cleaning-initial', amount: 2500 },
+                { id: 'expense-electricity', amount: 7000 },
+                { id: 'expense-month-11', amount: 8000 }
+            ];
+
+            let totalExpenses = 0;
+            expenses.forEach(expense => {
+                totalExpenses += expense.amount;
+            });
+
+            // Mettre à jour le total des dépenses
+            const totalExpensesElement = document.querySelector('[data-stat="total-expenses"]');
+            if (totalExpensesElement) {
+                totalExpensesElement.textContent = totalExpenses.toLocaleString();
+            }
+
+            // Calculer le solde
+            const balance = totalPaid - totalExpenses;
+            
+            // Afficher les statistiques
+            console.log('=== STATISTIQUES ===');
+            console.log('Total payé:', totalPaid.toLocaleString());
+            console.log('Total dépenses:', totalExpenses.toLocaleString());
+            console.log('Solde:', balance.toLocaleString());
+            console.log('Total non payé:', totalUnpaid.toLocaleString());
+        }
+
+        // Calculer les totaux au chargement de la page
+        window.addEventListener('DOMContentLoaded', calculateTotals);
+    </script>
 
 </body>
 </html>
