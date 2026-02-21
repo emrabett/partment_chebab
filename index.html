@@ -473,8 +473,8 @@
                     <div class="stat-value">11</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">المبلغ المتبقي</div>
-                    <div class="stat-value" data-stat="month-total-sum">0</div>
+                    <div class="stat-label">المبالغ المدفوعة </div>
+                    <div class="stat-value" data-stat="total-paid">0</div>
                 </div>
             </div>
         </div>
@@ -1132,11 +1132,10 @@
                 totalExpensesElement.textContent = totalExpenses.toLocaleString();
             }
 
-            // Total de tous les month-total (somme des montants de monthsData)
-            const monthTotalSum = monthsData.reduce((sum, m) => sum + m.amount, 0);
-            const monthTotalSumElement = document.querySelector('[data-stat="month-total-sum"]');
-            if (monthTotalSumElement) {
-                monthTotalSumElement.textContent = monthTotalSum.toLocaleString();
+            // المبالغ المدفوعة — total des montants effectivement payés pour tous les mois
+            const totalPaidElement = document.querySelector('[data-stat="total-paid"]');
+            if (totalPaidElement) {
+                totalPaidElement.textContent = totalPaid.toLocaleString();
             }
 
             // Calculer le solde
