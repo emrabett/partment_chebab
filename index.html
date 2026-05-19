@@ -459,27 +459,108 @@
                 </div>
                 
             </div>
-
+            
             <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-label">المصروفات الأخرى</div>
+                    <div class="stat-value" data-stat="expenses-grid">0</div>
+                </div>
                 <div class="stat-card">
                     <div class="stat-label">إجمالي المصروفات</div>
                     <div class="stat-value" data-stat="total-expenses">330,500</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">عدد الأشهر</div>
-                    <div class="stat-value">4</div>
+                    <div class="stat-value" data-stat="month-count">0</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">عدد الأفراد</div>
-                    <div class="stat-value">11</div>
+                    <div class="stat-value" data-stat="people-count">0</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">المبالغ المدفوعة </div>
                     <div class="stat-value" data-stat="total-paid">0</div>
                 </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">  reste a payer</div>
+                    <div class="stat-value" data-stat="total-unpaid">0</div>
+                </div>
             </div>
         </div>
-
+<!-- Month 7 (July) -->
+        <div class="month-section" data-month="month-7">
+            <div class="month-header">
+                <div class="month-title">📅 شهر يوليو (7)</div>
+                <div class="month-total">10000</div>
+            </div>
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th style="text-align: center;">المبلغ المدفوع</th>
+                        <th style="text-align: center;">الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name-cell">الدي باب</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">لمرابط</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمدو سيد احمد</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد الشيخ</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">حي خطري</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">احمد سالم مصطفى</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">عدنان خطري زنفور</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">مصطفى اسويدي</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">احمدو نامي</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد فال بدن</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">المصطفى حسين</td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <!-- Month 8 (August) -->
         <div class="month-section" data-month="month-8">
             <div class="month-header">
@@ -1286,11 +1367,11 @@
                         <td class="amount-cell">8000</td>
                         <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="name-cell">شيخن اعلي زمزام</td>
                         <td class="amount-cell">-</td>
                         <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
-                  </tr>
+                  </tr> -->
                 </tbody>
             </table>
         </div>
@@ -1307,6 +1388,7 @@
         function calculateTotals() {
             // Données des paiements par mois
             const monthsData = [
+                { monthId: 'month-7', amount: 10000 },
                 { monthId: 'month-8', amount: 10000 },
                 { monthId: 'month-9', amount: 5000 },
                 { monthId: 'month-10', amount: 9000 },
@@ -1345,7 +1427,13 @@
                             paidCount++;
                         }
                     } else if (statusCell && statusCell.classList.contains('unpaid-badge')) {
-                        totalUnpaid += month.amount;
+                        const amountText = amountCell.textContent.replace(/,/g, '').trim();
+                        let amount = parseFloat(amountText);
+                        if (isNaN(amount) || amountText === '-') {
+                            const note = section.querySelector('.note');
+                            amount = note && note.textContent.includes('8,000') ? 8000 : 10000;
+                        }
+                        totalUnpaid += amount;
                         unpaidCount++;
                     }
                 });
@@ -1357,36 +1445,32 @@
                 }
             });
 
-            // Calculer automatiquement les dépenses à partir des cartes affichées
-            let totalExpenses = 0;
+            const RENT_PER_MONTH = 81000;
+          
+            // Dépenses fixes (électricité, eau, etc.) — cartes du résumé
+            let otherExpenses = 0;
             const expenseCards = document.querySelectorAll('.expense-card');
             
             expenseCards.forEach(card => {
                 const amountElement = card.querySelector('.expense-amount');
                 if (amountElement) {
-                    // Extraire le nombre du texte (enlever les virgules et les mots comme "شهريا")
                     const amountText = amountElement.textContent.trim();
                     const amount = parseFloat(amountText.replace(/[^\d]/g, ''));
                     
                     if (!isNaN(amount) && amount > 0) {
-                        totalExpenses += amount;
+                        otherExpenses += amount;
                     }
                 }
             });
 
-            // Ajouter les totaux des mois (les loyers mensuels)
-            monthsData.forEach(month => {
-                const section = document.querySelector(`[data-month="${month.monthId}"]`);
-                if (section) {
-                    const monthTotalElement = section.querySelector('.month-total');
-                    if (monthTotalElement) {
-                        const monthAmount = parseFloat(monthTotalElement.textContent.replace(/,/g, ''));
-                        if (!isNaN(monthAmount)) {
-                            totalExpenses += monthAmount;
-                        }
-                    }
-                }
-            });
+            const monthCount = document.querySelectorAll('.month-section').length;
+            const totalRent = monthCount * RENT_PER_MONTH;
+            const totalExpenses = otherExpenses + totalRent ;
+
+            const expensesGridElement = document.querySelector('[data-stat="expenses-grid"]');
+            if (expensesGridElement) {
+                expensesGridElement.textContent = otherExpenses.toLocaleString();
+            }
 
             // Mettre à jour le total des dépenses
             const totalExpensesElement = document.querySelector('[data-stat="total-expenses"]');
@@ -1400,15 +1484,38 @@
                 totalPaidElement.textContent = totalPaid.toLocaleString();
             }
 
-            // Calculer le solde
+            // عدد الأفراد et عدد الأشهر
+            const firstMonthSection = document.querySelector('.month-section');
+            const peopleCount = firstMonthSection
+                ? firstMonthSection.querySelectorAll('tbody tr').length
+                : 0;
+            const monthCountElement = document.querySelector('[data-stat="month-count"]');
+            if (monthCountElement) {
+                monthCountElement.textContent = monthCount.toLocaleString();
+            }
+
+            const peopleCountElement = document.querySelector('[data-stat="people-count"]');
+            if (peopleCountElement) {
+                peopleCountElement.textContent = peopleCount.toLocaleString();
+            }
+   
+            // Reste à payer = (dépenses + loyer 81 000 × nb mois) − montants collectés
+            const resteAPayer = totalPaid - totalExpenses ;
+            const totalUnpaidElement = document.querySelector('[data-stat="total-unpaid"]');
+            if (totalUnpaidElement) {
+                totalUnpaidElement.textContent = resteAPayer.toLocaleString();
+            }
+
             const balance = totalPaid - totalExpenses;
-            
-            // Afficher les statistiques
+
             console.log('=== STATISTIQUES ===');
+            console.log('Loyer (' + monthCount + ' × ' + RENT_PER_MONTH.toLocaleString() + '):', totalRent.toLocaleString());
+            console.log('Autres dépenses:', otherExpenses.toLocaleString());
             console.log('Total payé:', totalPaid.toLocaleString());
             console.log('Total dépenses:', totalExpenses.toLocaleString());
+            console.log('Reste à payer:', resteAPayer.toLocaleString());
             console.log('Solde:', balance.toLocaleString());
-            console.log('Total non payé:', totalUnpaid.toLocaleString());
+            console.log('Paiements individuels non réglés:', totalUnpaid.toLocaleString());
         }
 
         // Calculer les totaux au chargement de la page
