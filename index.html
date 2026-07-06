@@ -1462,8 +1462,8 @@
                     </tr>
                     <tr>
                         <td class="name-cell">المصطفى حي اكليل</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -1541,8 +1541,8 @@
                     </tr>
                     <tr>
                         <td class="name-cell">المصطفى حي اكليل</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">8,000</td>
+                        <td style="text-align: center;"><span class="partial-badge">◐ مدفوع جزئياً</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -1600,6 +1600,19 @@
                             monthTotal += amount;
                             totalPaid += amount;
                             paidCount++;
+                        }
+                    } else if (statusCell && statusCell.classList.contains('partial-badge')) {
+                        const paidAmount = parseFloat(amountCell.textContent.replace(/,/g, '').trim());
+                        const note = section.querySelector('.note');
+                        const expectedAmount = note && note.textContent.includes('8,000') ? 8000
+                            : note && note.textContent.includes('10,000') ? 10000
+                            : month.amount;
+                        if (!isNaN(paidAmount) && paidAmount > 0) {
+                            monthTotal += paidAmount;
+                            totalPaid += paidAmount;
+                            if (paidAmount < expectedAmount) {
+                                totalUnpaid += expectedAmount - paidAmount;
+                            }
                         }
                     } else if (statusCell && statusCell.classList.contains('unpaid-badge')) {
                         const amountText = amountCell.textContent.replace(/,/g, '').trim();
