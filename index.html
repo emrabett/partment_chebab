@@ -501,6 +501,75 @@
             </div>
         </div>
 
+        <!-- AC Consumption List -->
+        <div class="month-section ac-list-section" data-ac-list="ac-consumption">
+            <div class="month-header">
+                <div class="month-title">❄️ قائمة استهلاك المكيف</div>
+                <div class="month-total ac-total">-</div>
+            </div>
+
+            <div class="note">
+                📌 ملاحظة: 2,500 للشخص الواحد
+            </div>
+
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th style="text-align: center;">المبلغ</th>
+                        <th style="text-align: center;">الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name-cell">عدنان خطري زنفور</td>
+                        <td class="amount-cell">0</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">احمد سالم مصطفى</td>
+                        <td class="amount-cell">0</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">الدي باب</td>
+                        <td class="amount-cell">0</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">حي خطري</td>
+                        <td class="amount-cell">0</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد فال بدن</td>
+                        <td class="amount-cell">2,500</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد الشيخ</td>
+                        <td class="amount-cell">2,500</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">مصطفى اسويدي</td>
+                        <td class="amount-cell">2,500</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">المصطفى حسين</td>
+                        <td class="amount-cell">0</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">لمرابط</td>
+                        <td class="amount-cell">2,500</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <!-- Month 7 (July) -->
         <div class="month-section" data-month="month-7">
             <div class="month-header">
@@ -1531,8 +1600,8 @@
                     </tr>
                     <tr>
                         <td class="name-cell">محمد فال بدن</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">المصطفى حسين</td>
@@ -1633,6 +1702,39 @@
                 }
             });
 
+            // Calculer liste climatiseur
+            const acSection = document.querySelector('[data-ac-list="ac-consumption"]');
+            if (acSection) {
+                let acPaidTotal = 0;
+                const acExpectedAmount = 2500;
+                acSection.querySelectorAll('tbody tr').forEach(row => {
+                    const statusCell = row.querySelector('.paid-badge, .unpaid-badge, .partial-badge');
+                    const amountCell = row.querySelector('.amount-cell');
+                    if (statusCell && statusCell.classList.contains('paid-badge')) {
+                        const amount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+                        if (!isNaN(amount)) {
+                            acPaidTotal += amount;
+                            totalPaid += amount;
+                        }
+                    } else if (statusCell && statusCell.classList.contains('partial-badge')) {
+                        const paidAmount = parseFloat(amountCell.textContent.replace(/,/g, '').trim());
+                        if (!isNaN(paidAmount) && paidAmount > 0) {
+                            acPaidTotal += paidAmount;
+                            totalPaid += paidAmount;
+                            if (paidAmount < acExpectedAmount) {
+                                totalUnpaid += acExpectedAmount - paidAmount;
+                            }
+                        }
+                    } else if (statusCell && statusCell.classList.contains('unpaid-badge')) {
+                        totalUnpaid += acExpectedAmount;
+                    }
+                });
+                const acTotalElement = acSection.querySelector('.ac-total');
+                if (acTotalElement) {
+                    acTotalElement.textContent = acPaidTotal.toLocaleString();
+                }
+            }
+
             const RENT_PER_MONTH = 81000;
 
             // Dépenses fixes (électricité, eau, etc.) — cartes du résumé
@@ -1651,7 +1753,7 @@
                 }
             });
 
-            const monthCount = document.querySelectorAll('.month-section').length;
+            const monthCount = document.querySelectorAll('.month-section:not(.ac-list-section)').length;
             const totalRent = monthCount * RENT_PER_MONTH;
             const totalExpenses = otherExpenses + totalRent;
 
@@ -1673,7 +1775,7 @@
             }
 
             // عدد الأفراد et عدد الأشهر
-            const firstMonthSection = document.querySelector('.month-section');
+            const firstMonthSection = document.querySelector('.month-section:not(.ac-list-section)');
             const peopleCount = firstMonthSection
                 ? firstMonthSection.querySelectorAll('tbody tr').length
                 : 0;
