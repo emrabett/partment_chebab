@@ -502,7 +502,7 @@
         </div>
 
         <!-- AC Consumption List -->
-        <div class="month-section ac-list-section" data-ac-list="ac-consumption">
+        <div class="month-section ac-list-section" data-ac-list="ac-consumption" data-ac-amount="2500">
             <div class="month-header">
                 <div class="month-title">❄️ قائمة استهلاك المكيف</div>
                 <div class="month-total ac-total">-</div>
@@ -564,6 +564,55 @@
                     <tr>
                         <td class="name-cell">لمرابط</td>
                         <td class="amount-cell">2,500</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- AC Consumption List 2 -->
+        <div class="month-section ac-list-section" data-ac-list="ac-consumption-2" data-ac-amount="10000">
+            <div class="month-header">
+                <div class="month-title">❄️ قائمة استهلاك المكيف (2)</div>
+                <div class="month-total ac-total">-</div>
+            </div>
+
+            <div class="note">
+                📌 ملاحظة: 10,000 للشخص الواحد
+            </div>
+
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th style="text-align: center;">المبلغ</th>
+                        <th style="text-align: center;">الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name-cell">حي خطري</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد فال بدن</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">عدنان خطري زنفور</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">مصطفى اسويدي</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">لمرابط</td>
+                        <td class="amount-cell">10000</td>
                         <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                 </tbody>
@@ -1702,11 +1751,16 @@
                 }
             });
 
-            // Calculer liste climatiseur
-            const acSection = document.querySelector('[data-ac-list="ac-consumption"]');
-            if (acSection) {
+            // Calculer listes climatiseur
+            document.querySelectorAll('[data-ac-list]').forEach(acSection => {
                 let acPaidTotal = 0;
-                const acExpectedAmount = 2500;
+                const note = acSection.querySelector('.note');
+                const dataAmount = parseFloat(acSection.getAttribute('data-ac-amount'));
+                const acExpectedAmount = !isNaN(dataAmount) ? dataAmount
+                    : note && note.textContent.includes('10,000') ? 10000
+                    : note && note.textContent.includes('2,500') ? 2500
+                    : 2500;
+
                 acSection.querySelectorAll('tbody tr').forEach(row => {
                     const statusCell = row.querySelector('.paid-badge, .unpaid-badge, .partial-badge');
                     const amountCell = row.querySelector('.amount-cell');
@@ -1733,7 +1787,7 @@
                 if (acTotalElement) {
                     acTotalElement.textContent = acPaidTotal.toLocaleString();
                 }
-            }
+            });
 
             const RENT_PER_MONTH = 81000;
 
