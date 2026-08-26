@@ -407,6 +407,68 @@
                 font-size: 1.1em;
             }
         }
+
+        .user-balance-actions {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .user-balance-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .user-balance-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .user-balance-panel {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .user-balance-panel.is-open {
+            display: block;
+        }
+
+        .user-balance-panel h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .user-balance-table tbody tr.has-debt {
+            background: #fff5f5;
+        }
+
+        .user-balance-table tbody tr.no-debt {
+            background: #f0fff4;
+        }
+
+        .reste-cell {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #dc3545;
+            text-align: center;
+        }
+
+        .reste-cell.zero {
+            color: #28a745;
+        }
     </style>
 </head>
 <body>
@@ -511,6 +573,27 @@
                     <div class="stat-value" data-stat="total-unpaid">0</div>
                 </div>
             </div>
+
+            <div class="user-balance-actions">
+                <button type="button" id="toggle-user-balances" class="user-balance-btn">
+                    📋 قائمة المتبقي لكل شخص
+                </button>
+            </div>
+        </div>
+
+        <!-- User balances panel -->
+        <div id="user-balances-panel" class="user-balance-panel">
+            <h2>📋 المتبقي لكل شخص</h2>
+            <table class="payments-table user-balance-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th style="text-align: center;">المتبقي</th>
+                        <th style="text-align: center;">التفاصيل</th>
+                    </tr>
+                </thead>
+                <tbody id="user-balances-body"></tbody>
+            </table>
         </div>
 
         <!-- AC Consumption List -->
@@ -545,8 +628,8 @@
                     </tr>
                     <tr>
                         <td class="name-cell">الدي باب</td>
-                        <td class="amount-cell">0</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">2,500</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">حي خطري</td>
@@ -583,7 +666,7 @@
         </div>
 
         <!-- AC Consumption List 2 -->
-        <div class="month-section ac-list-section" data-ac-list="ac-consumption-2" data-ac-amount="10000">
+        <div class="month-section ac-list-section" data-ac-list="ac-consumption-2" data-ac-amount="4100">
             <div class="month-header">
                 <div class="month-title">❄️ قائمة استهلاك المكيف (2)</div>
                 <div class="month-total ac-total">-</div>
@@ -640,7 +723,86 @@
                     </tr>
                   
                     <tr>
-                        <td class="name-cell">حمد سالم مصطفى</td>
+                        <td class="name-cell">احمد سالم مصطفى</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">الدي باب</td>
+                        <td class="amount-cell">4,100</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- AC Consumption List 3 -->
+        <div class="month-section ac-list-section" data-ac-list="ac-consumption-3" data-ac-amount="3100">
+            <div class="month-header">
+                <div class="month-title">❄️ قائمة استهلاك المكيف (3)</div>
+                <div class="month-total ac-total">-</div>
+            </div>
+
+            <div class="note">
+                📌 ملاحظة: 3,100 للشخص الواحد
+            </div>
+
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th style="text-align: center;">المبلغ</th>
+                        <th style="text-align: center;">الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name-cell">الدي باب</td>
+                        <td class="amount-cell">3,100</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">حي خطري</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد فال بدن</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">عدنان خطري زنفور</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">مصطفى اسويدي</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">لمرابط</td>
+                        <td class="amount-cell">3,100</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمدو سيد احمد</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">المصطفى حسين</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">محمد الشيخ</td>
+                        <td class="amount-cell">-</td>
+                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                    </tr>
+                    <tr>
+                        <td class="name-cell">احمد سالم مصطفى</td>
                         <td class="amount-cell">-</td>
                         <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
                     </tr>
@@ -1482,11 +1644,7 @@
                         <td class="amount-cell">8000</td>
                         <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
-                    <tr>
-                        <td class="name-cell">محمدو سيد احمد</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
-                    </tr>
+                   
                     <tr>
                         <td class="name-cell">محمد الشيخ</td>
                         <td class="amount-cell">8000</td>
@@ -1559,19 +1717,15 @@
                 <tbody>
                     <tr>
                         <td class="name-cell">الدي باب</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">لمرابط</td>
                         <td class="amount-cell">10000</td>
                         <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
-                    <tr>
-                        <td class="name-cell">محمدو سيد احمد</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
-                    </tr>
+                   
                     <tr>
                         <td class="name-cell">محمد الشيخ</td>
                         <td class="amount-cell">10000</td>
@@ -1638,19 +1792,15 @@
                 <tbody>
                     <tr>
                         <td class="name-cell">الدي باب</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">لمرابط</td>
                         <td class="amount-cell">10000</td>
                         <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
-                    <tr>
-                        <td class="name-cell">محمدو سيد احمد</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
-                    </tr>
+                   
                     <tr>
                         <td class="name-cell">محمد الشيخ</td>
                         <td class="amount-cell">10000</td>
@@ -1717,8 +1867,8 @@
                 <tbody>
                     <tr>
                         <td class="name-cell">الدي باب</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">لمرابط</td>
@@ -1796,13 +1946,13 @@
                 <tbody>
                     <tr>
                         <td class="name-cell">الدي باب</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">لمرابط</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">محمدو سيد احمد</td>
@@ -1826,8 +1976,8 @@
                     </tr>
                     <tr>
                         <td class="name-cell">عدنان خطري زنفور</td>
-                        <td class="amount-cell">-</td>
-                        <td style="text-align: center;"><span class="unpaid-badge">✗ غير مدفوع</span></td>
+                        <td class="amount-cell">10,000</td>
+                        <td style="text-align: center;"><span class="paid-badge">✓ مدفوع</span></td>
                     </tr>
                     <tr>
                         <td class="name-cell">مصطفى اسويدي</td>
@@ -1862,27 +2012,137 @@
     </div>
 
     <script>
+        const monthsData = [
+            { monthId: 'month-7', amount: 10000 },
+            { monthId: 'month-8', amount: 10000 },
+            { monthId: 'month-9', amount: 5000 },
+            { monthId: 'month-10', amount: 9000 },
+            { monthId: 'month-11', amount: 8000 },
+            { monthId: 'month-12', amount: 8000 },
+            { monthId: 'month-13', amount: 8000 },
+            { monthId: 'month-14', amount: 8000 },
+            { monthId: 'month-15', amount: 8000 },
+            { monthId: 'month-16', amount: 8000 },
+            { monthId: 'month-17', amount: 8000 },
+            { monthId: 'month-18', amount: 10000 },
+            { monthId: 'month-19', amount: 10000 },
+            { monthId: 'month-20', amount: 10000 },
+            { monthId: 'month-21', amount: 10000 },
+        ];
+
+        function normalizeName(name) {
+            if (!name) return name;
+            name = name.replace(/\s+/g, ' ').trim();
+            if (name === 'حمد سالم مصطفى') return 'احمد سالم مصطفى';
+            return name;
+        }
+
+        function parseAmount(text) {
+            const cleaned = text.replace(/,/g, '').trim();
+            if (cleaned === '-' || cleaned === '') return NaN;
+            return parseFloat(cleaned);
+        }
+
+        function getExpectedFromNote(noteEl, fallback) {
+            if (!noteEl) return fallback;
+            const text = noteEl.textContent;
+            const amounts = text.match(/[\d,]+/g);
+            if (amounts) {
+                for (let i = amounts.length - 1; i >= 0; i--) {
+                    const value = parseFloat(amounts[i].replace(/,/g, ''));
+                    if (!isNaN(value) && value >= 1000) return value;
+                }
+            }
+            return fallback;
+        }
+
+        function getRowRemaining(row, expectedAmount) {
+            const statusCell = row.querySelector('.paid-badge, .unpaid-badge, .partial-badge');
+            const amountCell = row.querySelector('.amount-cell');
+            if (!statusCell || !amountCell) return 0;
+
+            const paidAmount = parseAmount(amountCell.textContent);
+
+            if (statusCell.classList.contains('paid-badge')) return 0;
+            if (statusCell.classList.contains('unpaid-badge')) return expectedAmount;
+            if (statusCell.classList.contains('partial-badge')) {
+                const paid = isNaN(paidAmount) ? 0 : paidAmount;
+                return Math.max(0, expectedAmount - paid);
+            }
+            return 0;
+        }
+
+        function calculateUserBalances() {
+            const balances = {};
+            const monthAmounts = {};
+            monthsData.forEach(m => { monthAmounts[m.monthId] = m.amount; });
+
+            document.querySelectorAll('.month-section[data-month]').forEach(section => {
+                const monthId = section.getAttribute('data-month');
+                const title = section.querySelector('.month-title')?.textContent.trim() || monthId;
+                const expected = monthAmounts[monthId] || getExpectedFromNote(section.querySelector('.note'), 10000);
+
+                section.querySelectorAll('tbody tr').forEach(row => {
+                    const name = normalizeName(row.querySelector('.name-cell')?.textContent.trim());
+                    if (!name) return;
+                    const remaining = getRowRemaining(row, expected);
+                    if (remaining <= 0) return;
+
+                    if (!balances[name]) balances[name] = { total: 0, details: [] };
+                    balances[name].total += remaining;
+                    balances[name].details.push(title + ': ' + remaining.toLocaleString());
+                });
+            });
+
+            document.querySelectorAll('[data-ac-list]').forEach(section => {
+                const title = section.querySelector('.month-title')?.textContent.trim() || 'مكيف';
+                const dataAmount = parseFloat(section.getAttribute('data-ac-amount'));
+                const expected = !isNaN(dataAmount)
+                    ? dataAmount
+                    : getExpectedFromNote(section.querySelector('.note'), 2500);
+
+                section.querySelectorAll('tbody tr').forEach(row => {
+                    const name = normalizeName(row.querySelector('.name-cell')?.textContent.trim());
+                    if (!name) return;
+                    const remaining = getRowRemaining(row, expected);
+                    if (remaining <= 0) return;
+
+                    if (!balances[name]) balances[name] = { total: 0, details: [] };
+                    balances[name].total += remaining;
+                    balances[name].details.push(title + ': ' + remaining.toLocaleString());
+                });
+            });
+
+            return Object.entries(balances)
+                .map(([name, data]) => ({ name, ...data }))
+                .sort((a, b) => b.total - a.total);
+        }
+
+        function renderUserBalances() {
+            const tbody = document.getElementById('user-balances-body');
+            if (!tbody) return;
+
+            const users = calculateUserBalances();
+            tbody.innerHTML = '';
+
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;">✓ لا يوجد متبقي — الجميع مدفوع</td></tr>';
+                return;
+            }
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.className = user.total > 0 ? 'has-debt' : 'no-debt';
+                tr.innerHTML =
+                    '<td class="name-cell">' + user.name + '</td>' +
+                    '<td class="reste-cell' + (user.total === 0 ? ' zero' : '') + '">' + user.total.toLocaleString() + '</td>' +
+                    '<td style="font-size:0.95em;color:#5a6c7d;">' + user.details.join(' | ') + '</td>';
+                tbody.appendChild(tr);
+            });
+        }
+
         // Fonction pour calculer les totaux automatiquement
         function calculateTotals() {
-            // Données des paiements par mois
-            const monthsData = [
-                { monthId: 'month-7', amount: 10000 },
-                { monthId: 'month-8', amount: 10000 },
-                { monthId: 'month-9', amount: 5000 },
-                { monthId: 'month-10', amount: 9000 },
-                { monthId: 'month-11', amount: 8000 },
-                { monthId: 'month-12', amount: 8000 },
-                { monthId: 'month-13', amount: 8000 },
-                { monthId: 'month-14', amount: 8000 },
-                { monthId: 'month-15', amount: 8000 },
-                { monthId: 'month-16', amount: 8000 },
-                { monthId: 'month-17', amount: 8000 },
-                { monthId: 'month-18', amount: 10000 },
-                { monthId: 'month-19', amount: 10000 },
-                { monthId: 'month-20', amount: 10000 },
-                { monthId: 'month-21', amount: 10000 },
-            ];
-
             let totalPayments = 0;
             let totalPaid = 0;
             let totalUnpaid = 0;
@@ -2050,10 +2310,25 @@
             console.log('Reste à payer:', resteAPayer.toLocaleString());
             console.log('Solde:', balance.toLocaleString());
             console.log('Paiements individuels non réglés:', totalUnpaid.toLocaleString());
+
+            renderUserBalances();
         }
 
-        // Calculer les totaux au chargement de la page
-        window.addEventListener('DOMContentLoaded', calculateTotals);
+        window.addEventListener('DOMContentLoaded', () => {
+            calculateTotals();
+
+            const toggleBtn = document.getElementById('toggle-user-balances');
+            const panel = document.getElementById('user-balances-panel');
+            if (toggleBtn && panel) {
+                toggleBtn.addEventListener('click', () => {
+                    panel.classList.toggle('is-open');
+                    if (panel.classList.contains('is-open')) {
+                        renderUserBalances();
+                        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
+        });
     </script>
 
 </body>
